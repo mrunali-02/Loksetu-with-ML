@@ -1,0 +1,19 @@
+:root {
+  /* Restored Core Variables that your dashboard components actually use */
+  --color-primary: #10B981;
+  --color-primary-light: #34D399;
+  --color-accent: #F59E0B;
+  --color-secondary: #FFFFFF;
+  --color-text-inverse: #1F2937;
+  --color-bg: #F9FAFB;
+  --color-highlight: #D97706;
+  
+  /* Restored missing legacy variables to fix text visibility */
+  --ink: #000000;
+  --white: #ffffff;
+  --surface: #ffffff;
+  --teal: #10B981;
+  --gold: #F59E0B;
+  --font-display: 'Inter', sans-serif;
+  --font-mono: 'Roboto', monospace;
+}

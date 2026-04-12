@@ -1,0 +1,370 @@
+@import url('./theme.css');
+
+/* ─── Global scrollbar ──────────────────────── */
+::-webkit-scrollbar { width: 7px; height: 7px; }
+::-webkit-scrollbar-track { background: #0a0a0f; }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #c9923a 0%, #1a6b6b 100%);
+  border-radius: 4px;
+  border: 1px solid rgba(10, 10, 15, 0.6);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #e8b96a 0%, #2d9e9e 100%);
+}
+::-webkit-scrollbar-corner { background: #0a0a0f; }
+* { scrollbar-width: thin; scrollbar-color: #c9923a #0a0a0f; }
+
+code {
+  font-family: 'Fira Code', 'Monaco', 'Cascadia Code', 'Roboto Mono', monospace;
+  background: #f1f5f9;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.875em;
+}
+
+/* ══════════════════════════════════════════════
+   LIGHT MODE
+   Inverts the dark editorial system:
+   • ink (#0a0a0f)  → paper (#f0ede8)
+   • white          → near-black (#0d0d14)
+   • rgba-alpha whites → rgba-alpha blacks
+   ══════════════════════════════════════════════ */
+
+/* ── 1. Root variable flips ─────────────────── */
+[data-theme="light"] {
+  --ink:        #f0ede8;
+  --ink-soft:   #e4e0d8;
+  --cream:      #0d0d14;
+  --surface:    #1c1c2e;
+  --white:      #0d0d14;
+  --gold:       #b07d28;        /* slightly deeper gold — better on pale bg */
+  --gold-light: #c9923a;
+  --teal:       #165858;
+  --teal-light: #1a6b6b;
+  color-scheme: light;
+}
+
+/* ── 2. Body / html ─────────────────────────── */
+[data-theme="light"] html,
+[data-theme="light"] body {
+  background: #f0ede8;
+  color: #0d0d14;
+}
+
+/* ── 3. Scrollbar (light override) ─────────── */
+[data-theme="light"] ::-webkit-scrollbar-track { background: #e4e0d8; }
+[data-theme="light"] ::-webkit-scrollbar-thumb { border-color: rgba(240,237,232,0.6); }
+[data-theme="light"] * { scrollbar-color: #b07d28 #e4e0d8; }
+
+/* ── 4. Animated grid (fixed overlay) ──────── */
+[data-theme="light"] .admin-analytics-page::before,
+[data-theme="light"] .manage-events-page::before,
+[data-theme="light"] .manage-initiatives-page::before,
+[data-theme="light"] .manage-gallery-page::before,
+[data-theme="light"] .manage-achievements-page::before,
+[data-theme="light"] .submissions-page::before,
+[data-theme="light"] .settings-page::before,
+[data-theme="light"] .admin-home-page::before {
+  background-image:
+    linear-gradient(rgba(0,0,0,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.06) 1px, transparent 1px);
+}
+
+/* ── 5. Ambient glows ──────────────────────── */
+[data-theme="light"] .admin-analytics-page::after,
+[data-theme="light"] .manage-events-page::after,
+[data-theme="light"] .manage-initiatives-page::after,
+[data-theme="light"] .manage-gallery-page::after,
+[data-theme="light"] .manage-achievements-page::after,
+[data-theme="light"] .submissions-page::after,
+[data-theme="light"] .settings-page::after,
+[data-theme="light"] .admin-home-page::after {
+  opacity: 0.18;
+}
+
+/* ── 6. Page backgrounds ────────────────────── */
+[data-theme="light"] .admin-analytics-page,
+[data-theme="light"] .manage-events-page,
+[data-theme="light"] .manage-initiatives-page,
+[data-theme="light"] .manage-gallery-page,
+[data-theme="light"] .manage-achievements-page,
+[data-theme="light"] .submissions-page,
+[data-theme="light"] .settings-page,
+[data-theme="light"] .admin-home-page,
+[data-theme="light"] .admin-login-page,
+[data-theme="light"] .home-page {
+  background: #f0ede8;
+}
+
+/* ── 7. Navbars ─────────────────────────────── */
+[data-theme="light"] .navbar,
+[data-theme="light"] .admin-navbar {
+  background: rgba(240, 237, 232, 0.9) !important;
+  border-bottom-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+[data-theme="light"] .navbar.scrolled,
+[data-theme="light"] .admin-navbar.scrolled {
+  background: rgba(240, 237, 232, 0.98) !important;
+  border-bottom-color: rgba(176, 125, 40, 0.25) !important;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12) !important;
+}
+
+[data-theme="light"] .mobile-menu,
+[data-theme="light"] .admin-mobile-menu {
+  background: rgba(240, 237, 232, 0.98) !important;
+  border-top-color: rgba(0,0,0,0.08) !important;
+  border-bottom-color: rgba(176, 125, 40, 0.15) !important;
+  box-shadow: 0 20px 48px rgba(0,0,0,0.2) !important;
+}
+
+/* Nav link colors */
+[data-theme="light"] .nav-link,
+[data-theme="light"] .admin-nav-links a,
+[data-theme="light"] .mobile-nav-link {
+  color: rgba(0, 0, 0, 0.60) !important;
+}
+
+[data-theme="light"] .nav-link:hover,
+[data-theme="light"] .admin-nav-links a:hover,
+[data-theme="light"] .mobile-nav-link:hover {
+  color: rgba(0, 0, 0, 0.90) !important;
+  background: rgba(0,0,0,0.04) !important;
+}
+
+[data-theme="light"] .nav-link.active,
+[data-theme="light"] .admin-nav-links a.active,
+[data-theme="light"] .mobile-nav-link.active {
+  color: #0d0d14 !important;
+  background: rgba(176, 125, 40, 0.08) !important;
+}
+
+[data-theme="light"] .logo-subtitle { color: rgba(0,0,0,0.38) !important; }
+[data-theme="light"] .mobile-menu-header h3 { color: rgba(0,0,0,0.35) !important; }
+[data-theme="light"] .mobile-close-btn,
+[data-theme="light"] .admin-mobile-close {
+  border-color: rgba(0,0,0,0.1) !important;
+  background: rgba(0,0,0,0.04) !important;
+  color: rgba(0,0,0,0.45) !important;
+}
+[data-theme="light"] .menu-toggle,
+[data-theme="light"] .admin-menu-toggle {
+  border-color: rgba(0,0,0,0.12) !important;
+  color: rgba(0,0,0,0.55) !important;
+}
+
+[data-theme="light"] .mobile-admin-section,
+[data-theme="light"] .admin-mobile-header {
+  border-color: rgba(0,0,0,0.08) !important;
+}
+
+[data-theme="light"] .admin-mobile-links a {
+  color: rgba(0,0,0,0.60) !important;
+  border-left-color: transparent !important;
+}
+[data-theme="light"] .admin-mobile-links a:hover {
+  color: #0d0d14 !important;
+  background: rgba(0,0,0,0.04) !important;
+}
+[data-theme="light"] .admin-mobile-links a.active {
+  color: #0d0d14 !important;
+  background: rgba(176,125,40,0.08) !important;
+  border-left-color: #b07d28 !important;
+}
+
+/* ── 8. Glass form panels & cards ───────────── */
+[data-theme="light"] .achieve-form,
+[data-theme="light"] .event-form,
+[data-theme="light"] .gallery-form,
+[data-theme="light"] .initiative-form,
+[data-theme="light"] .settings-card {
+  background: rgba(255,255,255,0.65) !important;
+  border-color: rgba(0,0,0,0.1) !important;
+  backdrop-filter: blur(12px);
+}
+
+/* ── 9. List tiles ──────────────────────────── */
+[data-theme="light"] .achieve-item,
+[data-theme="light"] .event-item,
+[data-theme="light"] .gallery-item,
+[data-theme="light"] .initiative-item {
+  background: rgba(255,255,255,0.55) !important;
+  border-bottom-color: rgba(0,0,0,0.07) !important;
+}
+[data-theme="light"] .achieve-item:hover,
+[data-theme="light"] .event-item:hover,
+[data-theme="light"] .gallery-item:hover,
+[data-theme="light"] .initiative-item:hover {
+  background: rgba(255,255,255,0.82) !important;
+}
+
+[data-theme="light"] .achieve-list,
+[data-theme="light"] .events-list,
+[data-theme="light"] .gallery-list,
+[data-theme="light"] .initiatives-list {
+  border-color: rgba(0,0,0,0.08) !important;
+}
+
+/* ── 10. Inputs ─────────────────────────────── */
+[data-theme="light"] input[type="text"],
+[data-theme="light"] input[type="number"],
+[data-theme="light"] input[type="email"],
+[data-theme="light"] input[type="password"],
+[data-theme="light"] input[type="date"],
+[data-theme="light"] input[type="time"],
+[data-theme="light"] input[type="file"],
+[data-theme="light"] textarea,
+[data-theme="light"] select,
+[data-theme="light"] .settings-input,
+[data-theme="light"] .gallery-input {
+  background: rgba(255,255,255,0.7) !important;
+  border-color: rgba(0,0,0,0.15) !important;
+  color: #0d0d14 !important;
+}
+
+[data-theme="light"] input::placeholder,
+[data-theme="light"] textarea::placeholder { color: rgba(0,0,0,0.3) !important; }
+
+[data-theme="light"] input:focus,
+[data-theme="light"] textarea:focus,
+[data-theme="light"] select:focus,
+[data-theme="light"] .settings-input:focus,
+[data-theme="light"] .gallery-input:focus {
+  border-color: #1a6b6b !important;
+  background: rgba(255,255,255,0.88) !important;
+  box-shadow: 0 0 0 3px rgba(26,107,107,0.12) !important;
+}
+
+[data-theme="light"] input[type="file"] {
+  color: rgba(0,0,0,0.45) !important;
+}
+
+/* ── 11. Submission blocks ──────────────────── */
+[data-theme="light"] .event-submission-block {
+  background: rgba(255,255,255,0.5) !important;
+  border-color: rgba(0,0,0,0.09) !important;
+}
+[data-theme="light"] .event-sub-header {
+  background: rgba(255,255,255,0.65) !important;
+  border-bottom-color: rgba(0,0,0,0.07) !important;
+}
+[data-theme="light"] .sub-person {
+  background: rgba(255,255,255,0.55) !important;
+  border-color: rgba(0,0,0,0.07) !important;
+}
+[data-theme="light"] .sub-chip {
+  background: rgba(0,0,0,0.05) !important;
+  border-color: rgba(0,0,0,0.12) !important;
+  color: rgba(0,0,0,0.45) !important;
+}
+[data-theme="light"] .sub-chip.vol {
+  background: rgba(26,107,107,0.1) !important;
+  border-color: rgba(26,107,107,0.3) !important;
+  color: #165858 !important;
+}
+[data-theme="light"] .sub-chip.part {
+  background: rgba(176,125,40,0.1) !important;
+  border-color: rgba(176,125,40,0.28) !important;
+  color: #b07d28 !important;
+}
+[data-theme="light"] .sub-col:first-child { border-right-color: rgba(0,0,0,0.07) !important; }
+[data-theme="light"] .sub-person-name { color: #0d0d14 !important; }
+[data-theme="light"] .sub-person-meta { color: rgba(0,0,0,0.4) !important; }
+[data-theme="light"] .sub-col-title,
+[data-theme="light"] .submissions-state { color: rgba(0,0,0,0.35) !important; }
+[data-theme="light"] .submissions-state { border-color: rgba(0,0,0,0.1) !important; background: rgba(255,255,255,0.5) !important; }
+
+/* ── 12. Meta chips & badges ────────────────── */
+[data-theme="light"] .achieve-meta span,
+[data-theme="light"] .event-details span,
+[data-theme="light"] .gallery-details span {
+  background: rgba(0,0,0,0.05) !important;
+  border-color: rgba(0,0,0,0.1) !important;
+  color: rgba(0,0,0,0.4) !important;
+}
+
+/* ── 13. Page section labels (eyebrow) ──────── */
+[data-theme="light"] .page-eyebrow,
+[data-theme="light"] .submissions-eyebrow,
+[data-theme="light"] .settings-eyebrow { color: #b07d28 !important; }
+[data-theme="light"] .page-eyebrow::before,
+[data-theme="light"] .submissions-eyebrow::before,
+[data-theme="light"] .settings-eyebrow::before { background: #b07d28 !important; }
+
+/* ── 14. Form labels ─────────────────────────── */
+[data-theme="light"] .form-label,
+[data-theme="light"] .gallery-form-label,
+[data-theme="light"] .settings-field-label,
+[data-theme="light"] .social-network-label { color: rgba(0,0,0,0.38) !important; }
+
+/* ── 15. Stat tiles (admin home) ────────────── */
+[data-theme="light"] .stat-tile {
+  background: rgba(255,255,255,0.6) !important;
+  border-color: rgba(0,0,0,0.09) !important;
+}
+[data-theme="light"] .stat-tile:hover { background: rgba(255,255,255,0.85) !important; }
+[data-theme="light"] .stat-watermark { color: rgba(0,0,0,0.04) !important; }
+[data-theme="light"] .stat-value { color: #0d0d14 !important; }
+[data-theme="light"] .stat-label { color: rgba(0,0,0,0.45) !important; }
+
+/* ── 16. Empty states ────────────────────────── */
+[data-theme="light"] .no-events,
+[data-theme="light"] .no-gallery,
+[data-theme="light"] .no-achievements {
+  border-color: rgba(0,0,0,0.08) !important;
+}
+[data-theme="light"] .no-events-icon,
+[data-theme="light"] .no-gallery-icon,
+[data-theme="light"] .no-achievements-icon {
+  background: rgba(0,0,0,0.04) !important;
+  border-color: rgba(176,125,40,0.2) !important;
+}
+
+/* ── 17. Ghost action buttons ────────────────── */
+[data-theme="light"] .achieve-cancel-btn,
+[data-theme="light"] .cancel-btn {
+  border-color: rgba(0,0,0,0.15) !important;
+  color: rgba(0,0,0,0.45) !important;
+}
+[data-theme="light"] .achieve-cancel-btn:hover,
+[data-theme="light"] .cancel-btn:hover {
+  border-color: rgba(0,0,0,0.28) !important;
+  color: rgba(0,0,0,0.7) !important;
+  background: rgba(0,0,0,0.04) !important;
+}
+
+/* ── 18. Home page (public) ──────────────────── */
+[data-theme="light"] .home-page { background: #f5f3ee; color: var(--ink); }
+
+/* Theme toggle button (shared) */
+.theme-toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: none;
+  border: 1px solid rgba(201, 146, 58, 0.25);
+  border-radius: 3px;
+  color: rgba(255, 255, 255, 0.55);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  flex-shrink: 0;
+}
+
+.theme-toggle-btn:hover {
+  border-color: #c9923a;
+  color: #c9923a;
+  background: rgba(201, 146, 58, 0.08);
+}
+
+[data-theme="light"] .theme-toggle-btn {
+  border-color: rgba(0, 0, 0, 0.18);
+  color: rgba(0, 0, 0, 0.55);
+}
+
+[data-theme="light"] .theme-toggle-btn:hover {
+  border-color: #b07d28;
+  color: #b07d28;
+  background: rgba(176, 125, 40, 0.08);
+}
