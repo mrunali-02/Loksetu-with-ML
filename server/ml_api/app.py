@@ -495,22 +495,34 @@ def generate_report():
         participants_arr = e.get("participants", [])
         
         vols = 0
-        parts = 0
-        for p in participants_arr:
-            if str(p.get("role")).lower() == "volunteer": vols += 1
-            else: parts += 1
+        registered = 0
+        parts = 0 # actually attended
+        
+        if participants_arr:
+            for p in participants_arr:
+                if str(p.get("role")).lower() == "volunteer": 
+                    vols += 1
+                else: 
+                    registered += 1
+                    if str(p.get("attended", False)).lower() == "true" or p.get("attended") is True:
+                        parts += 1
+                        
+        # If participants_arr was empty OR only contained volunteers, fallback to the seeded numbers
+        if registered == 0:
+            registered = int(e.get("registered", 0) or 0)
+            parts = int(e.get("actual_participants", 0) or 0)
             
         summary_lines = []
         
-        import random
-        dropoff_pct = random.randint(5, 25) if parts > 0 else 0
-        if dropoff_pct > 20:
+        retention_pct = int((parts / registered) * 100) if registered > 0 else 0
+        if registered > 0 and retention_pct < 80:
             high_dropoff = True
             
-        registered = int(parts / (1 - (dropoff_pct/100.0))) if parts > 0 else 0
-        
-        if registered > 0:
-            summary_lines.append(f"{parts} participants attended out of {registered} registered ({dropoff_pct}% drop-off).")
+        status = e.get("status", "").lower()
+        if status == "upcoming":
+            summary_lines.append(f"This is an upcoming event. Metrics will be tracked once it completes.")
+        elif registered > 0 or parts > 0:
+            summary_lines.append(f"{parts} participants attended out of {registered} registered ({retention_pct}% retention rate).")
         else:
             summary_lines.append(f"No participants attended this event.")
             
@@ -529,7 +541,7 @@ def generate_report():
                 low_vol_ratio = True
                 
         event_reports.append({
-            "eventName": f"{name} ({date_raw[:10] if date_raw else 'TBD'})",
+            "eventName": name,
             "summary": " ".join(summary_lines)
         })
 
@@ -541,7 +553,7 @@ def generate_report():
     
     recs = []
     if high_dropoff:
-        recs.append("Introduce automated SMS/Email reminders 24 hours prior to reduce drop-off.")
+        recs.append("Introduce automated SMS/Email reminders 24 hours prior to improve retention rate.")
     if frequent_full_cap:
         recs.append("Increase volunteer capacity limits for high-demand structured events.")
     if low_vol_ratio:

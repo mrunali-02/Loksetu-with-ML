@@ -57,7 +57,7 @@ export default function EventFilterBar({
   );
 
   return (
-    <Box sx={{ mb: 4, p: 3, bgcolor: "background.paper", borderRadius: 3, boxShadow: "0 4px 20px rgba(0,0,0,0.05)" }}>
+    <Box sx={{ mb: 4, p: 3, bgcolor: "background.paper", borderRadius: 3, boxShadow: "0 4px 20px var(--border-soft)" }}>
       {/* Top Search Row */}
       <Box sx={{ mb: 3 }}>
         <TextField

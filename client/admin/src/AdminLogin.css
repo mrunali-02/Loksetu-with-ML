@@ -17,7 +17,7 @@
 
 /* ─── LEFT PANEL ────────────────────────────── */
 .login-left {
-  background: var(--ink);
+  background: var(--bg-main);
   position: relative;
   overflow: hidden;
   display: flex;
@@ -71,7 +71,7 @@
 .login-brand-icon {
   width: 42px;
   height: 42px;
-  background: linear-gradient(135deg, var(--teal), var(--teal-light));
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-hover));
   border-radius: 3px;
   display: flex;
   align-items: center;
@@ -88,7 +88,7 @@
   font-family: var(--font-display);
   font-size: 1.05rem;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--text-secondary);
   letter-spacing: -0.3px;
 }
 
@@ -101,7 +101,7 @@
   font-size: 0.65rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--color-accent);
   margin-bottom: 20px;
   opacity: 0;
   animation: fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
@@ -112,7 +112,7 @@
   display: block;
   width: 24px;
   height: 1px;
-  background: var(--gold);
+  background: var(--color-accent);
   opacity: 0.5;
 }
 
@@ -120,7 +120,7 @@
   font-family: var(--font-display);
   font-size: clamp(2.4rem, 4vw, 3.8rem);
   font-weight: 900;
-  color: var(--white);
+  color: var(--text-primary);
   letter-spacing: -2.5px;
   line-height: 1.0;
   margin: 0 0 20px;
@@ -136,7 +136,7 @@
 
 .login-sub {
   font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.38);
+  color: var(--text-secondary);
   font-weight: 300;
   line-height: 1.7;
   max-width: 340px;
@@ -161,14 +161,14 @@
   font-family: var(--font-mono);
   font-size: 0.7rem;
   letter-spacing: 0.08em;
-  color: rgba(255, 255, 255, 0.45);
+  color: var(--text-secondary);
 }
 
 .login-feature-dot {
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: var(--gold);
+  background: var(--color-accent);
   opacity: 0.65;
   flex-shrink: 0;
 }
@@ -179,7 +179,7 @@
   font-family: var(--font-mono);
   font-size: 0.6rem;
   letter-spacing: 0.1em;
-  color: rgba(255, 255, 255, 0.2);
+  color: var(--text-secondary);
   opacity: 0;
   animation: fade-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.55s forwards;
 }
@@ -217,7 +217,7 @@
   font-size: 0.65rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(0, 0, 0, 0.32);
+  color: var(--text-secondary);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -231,14 +231,14 @@
   display: block;
   width: 18px;
   height: 1px;
-  background: rgba(0, 0, 0, 0.25);
+  background: var(--bg-card);
 }
 
 .app-container h1 {
   font-family: var(--font-display);
   font-size: 2.5rem;
   font-weight: 900;
-  color: var(--ink);
+  color: var(--bg-main);
   letter-spacing: -1.5px;
   line-height: 1.0;
   margin: 0 0 8px;
@@ -254,7 +254,7 @@
 
 .login-form-tagline {
   font-size: 0.875rem;
-  color: rgba(0, 0, 0, 0.38);
+  color: var(--text-secondary);
   font-weight: 300;
   margin: 0 0 40px;
   opacity: 0;
@@ -283,7 +283,7 @@ form.login-form {
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(0, 0, 0, 0.4);
+  color: var(--text-secondary);
 }
 
 /* Input wrapper for icon */
@@ -296,32 +296,32 @@ form.login-form {
   left: 14px;
   top: 50%;
   transform: translateY(-50%);
-  color: rgba(0, 0, 0, 0.28);
+  color: var(--text-secondary);
   display: flex;
   align-items: center;
   pointer-events: none;
   transition: color 0.2s ease;
 }
 
-.input-wrap:focus-within .input-icon { color: var(--teal); }
+.input-wrap:focus-within .input-icon { color: var(--color-primary); }
 
 .login-input {
   width: 100%;
   padding: 13px 16px 13px 42px;
-  border: 1px solid rgba(0, 0, 0, 0.12);
+  border: 1px solid var(--border-soft);
   border-radius: 3px;
   font-family: var(--font-body);
   font-size: 0.9rem;
-  color: var(--ink);
+  color: var(--bg-main);
   background: white;
   outline: none;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.login-input::placeholder { color: rgba(0, 0, 0, 0.25); }
+.login-input::placeholder { color: var(--text-secondary); }
 
 .login-input:focus {
-  border-color: var(--teal);
+  border-color: var(--color-primary);
   box-shadow: 0 0 0 3px rgba(26, 107, 107, 0.1);
 }
 
@@ -334,22 +334,22 @@ form.login-form {
   background: none;
   border: none;
   cursor: pointer;
-  color: rgba(0, 0, 0, 0.3);
+  color: var(--text-secondary);
   display: flex;
   align-items: center;
   padding: 2px;
   transition: color 0.2s ease;
 }
 
-.pass-toggle:hover { color: var(--ink); }
+.pass-toggle:hover { color: var(--bg-main); }
 
 /* Submit */
 .login-submit-btn {
   margin-top: 8px;
   width: 100%;
   padding: 14px;
-  background: var(--ink);
-  color: var(--white);
+  background: var(--bg-main);
+  color: var(--text-primary);
   border: none;
   border-radius: 3px;
   font-family: var(--font-body);
@@ -420,7 +420,7 @@ form.login-form {
 .login-alert.success {
   background: rgba(26, 107, 107, 0.07);
   border: 1px solid rgba(26, 107, 107, 0.2);
-  color: var(--teal);
+  color: var(--color-primary);
 }
 
 .login-alert svg { flex-shrink: 0; margin-top: 1px; }
@@ -440,7 +440,7 @@ form.login-form {
   content: '';
   flex: 1;
   height: 1px;
-  background: rgba(0, 0, 0, 0.08);
+  background: var(--bg-card);
 }
 
 .login-divider span {
@@ -448,7 +448,7 @@ form.login-form {
   font-size: 0.6rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(0, 0, 0, 0.25);
+  color: var(--text-secondary);
 }
 
 .login-back-link {
@@ -458,11 +458,11 @@ form.login-form {
   gap: 6px;
   margin-top: 14px;
   padding: 12px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border-soft);
   border-radius: 3px;
   text-decoration: none;
   font-size: 0.83rem;
-  color: rgba(0, 0, 0, 0.45);
+  color: var(--text-secondary);
   transition: all 0.2s ease;
   font-family: var(--font-body);
   opacity: 0;
@@ -470,9 +470,9 @@ form.login-form {
 }
 
 .login-back-link:hover {
-  border-color: rgba(0, 0, 0, 0.2);
-  color: var(--ink);
-  background: rgba(0, 0, 0, 0.025);
+  border-color: var(--text-secondary);
+  color: var(--bg-main);
+  background: var(--bg-card);
 }
 
 /* ─── Animations ────────────────────────────── */

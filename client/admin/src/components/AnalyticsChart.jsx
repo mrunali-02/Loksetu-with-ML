@@ -14,13 +14,13 @@ const AnalyticsChart = ({ registered, participated }) => {
     if (active && payload && payload.length) {
       return (
         <div style={{
-          backgroundColor: 'var(--ink)',
+          backgroundColor: 'var(--bg-main)',
           padding: '12px',
-          border: '1px solid var(--gold)',
+          border: '1px solid var(--color-accent)',
           borderRadius: '3px',
           boxShadow: '0 8px 30px rgba(0, 0, 0, 0.5)',
         }}>
-          <p style={{ margin: '0 0 8px 0', fontWeight: 'bold', color: 'var(--white)', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>{label}</p>
+          <p style={{ margin: '0 0 8px 0', fontWeight: 'bold', color: 'var(--text-primary)', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>{label}</p>
           {payload.map((entry, index) => (
             <div key={index} style={{ color: entry.color, fontWeight: '600' }}>
               {entry.name}: {entry.value}
@@ -41,13 +41,13 @@ const AnalyticsChart = ({ registered, participated }) => {
             margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
             barSize={100}
           >
-            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.05)" />
-            <XAxis dataKey="name" tick={{ fill: 'currentColor', fontWeight: 500, fontFamily: 'var(--font-body)' }} axisLine={{ stroke: 'rgba(255,255,255,0.1)' }} />
-            <YAxis tick={{ fill: 'currentColor', fontFamily: 'var(--font-body)' }} axisLine={{ stroke: 'rgba(255,255,255,0.1)' }} allowDecimals={false} />
+            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E2E8F0" />
+            <XAxis dataKey="name" tick={{ fill: 'currentColor', fontWeight: 500, fontFamily: 'var(--font-body)' }} axisLine={{ stroke: '#CBD5E1' }} />
+            <YAxis tick={{ fill: 'currentColor', fontFamily: 'var(--font-body)' }} axisLine={{ stroke: '#CBD5E1' }} allowDecimals={false} />
             <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(255, 255, 255, 0.02)' }} />
             <Legend wrapperStyle={{ paddingTop: '20px', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', letterSpacing: '0.1em', textTransform: 'uppercase' }} />
-            <Bar dataKey="Registered" fill="var(--teal)" radius={[2, 2, 0, 0]} />
-            <Bar dataKey="Participated" fill="var(--gold)" radius={[2, 2, 0, 0]} />
+            <Bar dataKey="Registered" fill="var(--color-primary)" radius={[2, 2, 0, 0]} />
+            <Bar dataKey="Participated" fill="var(--color-accent)" radius={[2, 2, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
       ) : (

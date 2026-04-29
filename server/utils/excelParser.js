@@ -17,11 +17,12 @@ const excelFilter = (req, file, cb) => {
   if (
     file.mimetype.includes("excel") ||
     file.mimetype.includes("spreadsheetml") ||
-    file.originalname.match(/\.(xlsx|xls)$/)
+    file.mimetype.includes("csv") ||
+    file.originalname.match(/\.(xlsx|xls|csv)$/)
   ) {
     cb(null, true);
   } else {
-    cb(new Error("Please upload only valid Excel files (.xlsx or .xls)."), false);
+    cb(new Error("Please upload only valid Excel or CSV files (.xlsx, .xls, .csv)."), false);
   }
 };
 
@@ -38,7 +39,7 @@ const upload = multer({
  */
 const parseExcelFile = (filePath) => {
   try {
-    const workbook = xlsx.readFile(filePath);
+    const workbook = xlsx.readFile(filePath, { type: 'file' });
     const sheetName = workbook.SheetNames[0];
     const sheet = workbook.Sheets[sheetName];
     
@@ -63,7 +64,7 @@ const parseExcelFile = (filePath) => {
         name: row.name || row.Name || row.NAME || "Unknown Participant",
         email: row.email || row.Email || row.EMAIL || "no-email@provided.com",
         attended: isAttended,
-        role: 'Participant' // Default enforcement
+        role: row.role || row.Role || row.ROLE || 'Participant' 
       };
     }).filter(p => p.name !== "Unknown Participant" || p.email !== "no-email@provided.com"); // Strip fully empty rows
     

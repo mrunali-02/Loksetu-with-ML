@@ -5,8 +5,35 @@ import AnalyticsChart from '../components/AnalyticsChart';
 import ParticipantsTable from '../components/ParticipantsTable';
 import NaviBar from '../NaviBar';
 import { toast } from 'react-toastify';
-import { BarChart2, Users, Calendar, ArrowUpRight } from 'lucide-react';
+import { BarChart2, ArrowUpRight, Sparkles, TrendingUp } from 'lucide-react';
+import KpiCard from '../components/KpiCard';
 import './AdminAnalytics.css';
+
+const PredictionRow = ({ eventId }) => {
+  const [prediction, setPrediction] = useState(null);
+  
+  useEffect(() => {
+    if (eventId) {
+      axios.get(`${API_BASE_URL}/events/${eventId}/predict`)
+        .then(res => setPrediction(res.data))
+        .catch(() => setPrediction(null));
+    }
+  }, [eventId]);
+
+  if (!prediction) return null;
+
+  return (
+    <div className="prediction-banner">
+      <div className="pred-main">
+        <Sparkles size={16} className="sparkle-anim" />
+        <span className="pred-text">
+          <strong>ML Prediction:</strong> Expected turnout is <strong>{prediction.predicted_participants} people</strong>.
+        </span>
+      </div>
+      <div className="pred-subtitle">{prediction.confidence_note}</div>
+    </div>
+  );
+};
 
 const API_BASE_URL = 'http://localhost:5000/api';
 
@@ -16,10 +43,21 @@ const AdminAnalytics = () => {
   const [analyticsData, setAnalyticsData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [globalKpi, setGlobalKpi] = useState(null);
 
   useEffect(() => {
     fetchEvents();
+    fetchGlobalKpi();
   }, []);
+
+  const fetchGlobalKpi = async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/analytics/kpi`);
+      setGlobalKpi(response.data);
+    } catch (error) {
+      console.error('Failed to load global kpis', error);
+    }
+  };
 
   useEffect(() => {
     if (selectedEventId) {
@@ -88,11 +126,23 @@ const AdminAnalytics = () => {
         {/* Editorial Header */}
         <div className="page-eyebrow"><BarChart2 size={12} /> Admin · Analytics</div>
         <h2 className="admin-analytics-title">
-          Event <em>Analytics</em>
+          Event Analytics
         </h2>
         <p className="admin-analytics-subtitle">
           Insights, participation metrics, and cross-event data management.
         </p>
+
+        {globalKpi && (
+          <div className="kpi-wrapper" style={{marginBottom: "40px"}}>
+             <div className="section-label-thin">Global Operations Overview</div>
+             <div className="stats-grid-analytics">
+               <KpiCard title="Total Impact" value={globalKpi.totalParticipants} type="impact" />
+               <KpiCard title="Events Conducted" value={globalKpi.totalEvents} type="events" />
+               <KpiCard title="Volunteers Active" value={globalKpi.totalVolunteers || 0} type="volunteers" />
+               <KpiCard title="Participation Rate" value={globalKpi.avgAttendanceRate} suffix="%" type="attendance" />
+             </div>
+          </div>
+        )}
 
         <div className="analytics-controls">
           <EventDropdown 
@@ -107,7 +157,7 @@ const AdminAnalytics = () => {
                 {uploading ? 'Uploading...' : 'Upload Excel Sheet'}
                 <input 
                   type="file" 
-                  accept=".xlsx, .xls" 
+                  accept=".xlsx, .xls, .csv" 
                   onChange={handleFileUpload} 
                   disabled={uploading}
                   hidden
@@ -155,6 +205,7 @@ const AdminAnalytics = () => {
                   <strong>Notice:</strong> Low volunteer ratio. Additional recruitment advised.
                 </div>
               )}
+              <PredictionRow eventId={selectedEventId} />
             </div>
 
             {/* Editorial Stats Grid */}
@@ -187,12 +238,12 @@ const AdminAnalytics = () => {
             {/* Roster Sections */}
             <div className="participants-section">
               <div className="section-label-thin">🤝 Volunteer Team</div>
-              <ParticipantsTable participants={analyticsData.volunteers || []} />
+              <ParticipantsTable participants={analyticsData.volunteers || []} eventName={analyticsData.eventName} />
             </div>
 
             <div className="participants-section">
               <div className="section-label-thin">🎟️ Participant Roster</div>
-              <ParticipantsTable participants={analyticsData.participants || []} />
+              <ParticipantsTable participants={analyticsData.participants || []} eventName={analyticsData.eventName} />
             </div>
 
           </div>

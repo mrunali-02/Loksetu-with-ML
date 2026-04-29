@@ -85,10 +85,19 @@ function ManageEvents() {
   };
 
   const handleDelete = async (id) => {
+    const isConfirmed = window.confirm("Are you sure you want to delete this event? This action cannot be undone.");
+    if (!isConfirmed) return;
+
     try {
       await axios.delete(`http://localhost:5000/api/events/${id}`);
+      setMessage("Event deleted successfully.");
+      setMsgType("success");
       fetchEvents();
-    } catch (err) { console.error(err); }
+    } catch (err) { 
+      console.error(err); 
+      setMessage("Failed to delete event.");
+      setMsgType("error");
+    }
   };
 
   return (
@@ -99,7 +108,7 @@ function ManageEvents() {
         {/* Heading */}
         <div className="page-eyebrow"><Calendar size={12} /> Admin · Events</div>
         <h2 className="manage-events-title">
-          {editingId ? <>Edit <em>Event</em></> : <>Add <em>Event</em></>}
+          {editingId ? "Edit Event" : "Add Event"}
         </h2>
 
         {/* Form */}

@@ -186,12 +186,6 @@ function Home() {
         transition={{ duration: 0.8 }}
       >
         {/* Animated background */}
-        <div className="hero-background">
-          <div className="hero-pattern"></div>
-          <div className="hero-orb hero-orb-1"></div>
-          <div className="hero-orb hero-orb-2"></div>
-          <div className="hero-orb hero-orb-3"></div>
-        </div>
 
         <div className="hero-content">
           {/* Left: text */}

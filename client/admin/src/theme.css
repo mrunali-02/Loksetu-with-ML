@@ -1,19 +1,63 @@
 :root {
-  /* Restored Core Variables that your dashboard components actually use */
-  --color-primary: #10B981;
-  --color-primary-light: #34D399;
-  --color-accent: #F59E0B;
-  --color-secondary: #FFFFFF;
-  --color-text-inverse: #1F2937;
-  --color-bg: #F9FAFB;
-  --color-highlight: #D97706;
-  
-  /* Restored missing legacy variables to fix text visibility */
-  --ink: #000000;
-  --white: #ffffff;
-  --surface: #ffffff;
-  --teal: #10B981;
-  --gold: #F59E0B;
-  --font-display: 'Inter', sans-serif;
-  --font-mono: 'Roboto', monospace;
+  /* ═══════════════════════════════════════════════════════
+     MODERN SLATE & VIOLET DESIGN SYSTEM (DARK MODE DEFAULT)
+     ═══════════════════════════════════════════════════════ */
+
+  /* 🔹 Background System */
+  --bg-main: #0F0F1A;
+  --bg-soft: #1A1A2E;
+  --bg-card: #1E1E30;
+
+  /* 🔹 Text System */
+  --text-primary: #F1F1F5;
+  --text-secondary: #A0A0B8;
+
+  /* 🔹 Brand Colors */
+  --color-primary: #6366F1;
+  --color-primary-hover: #4F46E5;
+  --color-accent: #A78BFA;
+
+  /* 🔹 Status Colors */
+  --color-success: #34D399;
+  --color-warning: #FBBF24;
+  --color-danger: #F87171;
+
+  /* 🔹 Borders */
+  --border-soft: rgba(99, 102, 241, 0.1);
+
+  /* 🔹 Gradients */
+  --gradient-primary: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+
+  /* 🔹 Typography System */
+  --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Monaco', 'Cascadia Code', monospace;
+  --font-display: var(--font-primary);
+  --font-body: var(--font-primary);
+
+  /* 🔹 Font Sizes */
+  --font-size-base: 15px;
+  --font-size-sm: 13px;
+  --font-size-lg: 17px;
+  --font-size-xl: 20px;
+  --font-size-2xl: 24px;
+  --font-size-3xl: 30px;
+
+  /* 🔹 Spacing & Rhythm */
+  --line-height-base: 1.6;
+  --line-height-tight: 1.25;
+  --letter-spacing-tight: -0.02em;
+  --letter-spacing-normal: 0em;
+  --letter-spacing-wide: 0.04em;
+
+  /* Eased animations base */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+/* ── Utilities ── */
+.text-success { color: var(--color-success); }
+.text-warning { color: var(--color-warning); }
+.text-danger { color: var(--color-danger); }
+
+.bg-success { background: var(--color-success); }
+.bg-warning { background: var(--color-warning); }
+.bg-danger { background: var(--color-danger); }

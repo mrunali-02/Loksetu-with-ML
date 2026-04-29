@@ -6,6 +6,7 @@ import {
   LogOut, ArrowRight, BarChart2, Download, Loader2,
 } from "lucide-react";
 import "./AdminHome.css";
+import AIInsightDashboard from "./components/AIInsightDashboard";
 
 function AdminHome() {
   const nav = useNavigate();
@@ -13,13 +14,15 @@ function AdminHome() {
   const [stats, setStats] = useState({ initiatives: 0, events: 0, achievements: 0, gallery: 0 });
   const [loading, setLoading] = useState(true);
   const [reportData, setReportData] = useState(null);
+  const [eventsData, setEventsData] = useState([]);
+  const [globalKpi, setGlobalKpi] = useState(null);
   const [generatingReport, setGeneratingReport] = useState(false);
 
   useEffect(() => {
     const e = localStorage.getItem("email");
     if (e !== null) { setEmail(e); }
     else             { nav("/admin"); }
-  }, []);
+  }, [nav]);
 
   useEffect(() => {
     const fetchCounts = async () => {
@@ -52,9 +55,18 @@ function AdminHome() {
     setGeneratingReport(true);
     setReportData(null);
     try {
-      const res = await fetch("http://localhost:5000/api/reports/generate", { method: "POST" });
-      const data = await res.json();
-      setReportData(data.eventReports ? data : { error: "Failed to generate predictive report." });
+      const [repRes, evRes, kpiRes] = await Promise.all([
+        fetch("http://localhost:5000/api/reports/generate", { method: "POST" }),
+        fetch("http://localhost:5000/api/events"),
+        fetch("http://localhost:5000/api/analytics/kpi")
+      ]);
+      const repData = await repRes.json();
+      const evData = await evRes.json();
+      const kpiData = await kpiRes.json();
+
+      setEventsData(evData);
+      setGlobalKpi(kpiData);
+      setReportData(repData.eventReports ? repData : { error: "Failed to generate predictive report." });
     } catch (err) {
       console.error(err);
       setReportData({ error: "Error connecting to the analytical ML API." });
@@ -111,7 +123,7 @@ function AdminHome() {
                 <BarChart2 size={12} />
                 Control Panel
               </div>
-              <h1>Admin <em>Dashboard</em></h1>
+              <h1>Admin Dashboard</h1>
               <p>Logged in as {email || "Administrator"} · Manage your content below.</p>
             </div>
             <form onSubmit={lo} className="logout-form">
@@ -184,35 +196,12 @@ function AdminHome() {
             {/* Output */}
             {reportData?.eventReports && (
               <div className="report-output">
+                <AIInsightDashboard reportData={reportData} eventsData={eventsData} globalKpi={globalKpi} />
 
-                {/* Global summary */}
-                <div className="report-global">
-                  <h4>Global Overview</h4>
-                  <p>{reportData.globalSummary}</p>
-                </div>
-
-                {/* Event breakdown */}
-                <div className="report-breakdown-title">Event Breakdown</div>
-                {reportData.eventReports.map((ev, idx) => (
-                  <div key={idx} className="report-event-card">
-                    <h5>{ev.eventName}</h5>
-                    <p>{ev.summary}</p>
-                  </div>
-                ))}
-
-                {/* Recommendations */}
-                <div className="report-recommendations">
-                  <h4>💡 Strategic Recommendations</h4>
-                  {reportData.recommendations.split("\\n").map((line, idx) => (
-                    <p key={idx}>{line}</p>
-                  ))}
-                </div>
-
-                <button className="download-btn" onClick={downloadReport}>
+                <button className="download-btn" onClick={downloadReport} style={{marginTop: 30}}>
                   <Download size={14} />
                   Download Raw Report
                 </button>
-
               </div>
             )}
           </section>

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, Users, TrendingUp, TrendingDown, ArrowUpRight } from 'lucide-react';
+import { Calendar, Users, TrendingUp, TrendingDown, ArrowUpRight, Leaf, BarChart2 } from 'lucide-react';
 
 const icons = {
   events: <Calendar size={20} />,
-  participants: <Users size={20} />,
-  attendance: <TrendingUp size={20} />,
-  dropoff: <TrendingDown size={20} />
+  impact: <Leaf size={20} />,
+  volunteers: <Users size={20} />,
+  attendance: <BarChart2 size={20} />,
+  retention: <TrendingUp size={20} />
 };
 
 export default function KpiCard({ title, value, type, suffix = '' }) {
@@ -32,11 +33,11 @@ export default function KpiCard({ title, value, type, suffix = '' }) {
   }, [value]);
 
   const colorClass = 
-    type === 'attendance' && parseFloat(value) >= 70 ? 'green' : 
-    type === 'attendance' && parseFloat(value) < 70 ? 'orange' :
-    type === 'dropoff' && parseFloat(value) >= 20 ? 'red' : 
-    type === 'dropoff' && parseFloat(value) < 20 ? 'green' : 
-    type === 'events' ? 'blue' : 'amber';
+    type === 'attendance' && parseFloat(value) >= 70 ? 'green' :
+      type === 'attendance' && parseFloat(value) < 70 ? 'orange' :
+        type === 'retention' && parseFloat(value) >= 80 ? 'green' :
+          type === 'retention' && parseFloat(value) < 80 ? 'red' :
+            type === 'impact' ? 'green' : type === 'events' ? 'blue' : 'amber';
 
   return (
     <div className="stat-card" title={`Metric: ${title}`}>
@@ -44,7 +45,7 @@ export default function KpiCard({ title, value, type, suffix = '' }) {
         {icons[type] || <Calendar size={20} />}
       </div>
       <div className="stat-value">
-        {type === 'events' || type === 'participants' ? Math.floor(displayValue) : displayValue}{suffix && <span className="stat-suffix">{suffix}</span>}
+        {type === 'events' || type === 'impact' || type === 'volunteers' ? Math.floor(displayValue) : displayValue}{suffix && <span className="stat-suffix">{suffix}</span>}
       </div>
       <div className="stat-label">{title}</div>
       <div className="stat-link-fake">

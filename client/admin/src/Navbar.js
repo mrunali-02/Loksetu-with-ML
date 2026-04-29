@@ -48,48 +48,13 @@ function Navbar() {
   }, []);
 
   const navItems = [
-    { 
-      path: "/home", 
-      label: "Home", 
-      icon: HomeIcon,
-      color: "#2E7D32"
-    },
-    { 
-      path: "/achievements", 
-      label: "Achievements", 
-      icon: TrophyIcon,
-      color: "#FF6F00"
-    },
-    { 
-      path: "/initiatives", 
-      label: "Initiatives", 
-      icon: LightbulbIcon,
-      color: "#7B1FA2"
-    },
-    { 
-      path: "/gallery", 
-      label: "Gallery", 
-      icon: ImagesIcon,
-      color: "#1976D2"
-    },
-    { 
-      path: "/events", 
-      label: "Events", 
-      icon: CalendarIcon,
-      color: "#E91E63"
-    },
-    { 
-      path: "/chat", 
-      label: "AI Chatbot", 
-      icon: MessageIcon,
-      color: "#00BCD4"
-    },
-    { 
-      path: "/contact", 
-      label: "Contact", 
-      icon: MessageIcon,
-      color: "#4CAF50"
-    },
+    { path: "/home",         label: "Home",         icon: HomeIcon      },
+    { path: "/achievements",  label: "Achievements", icon: TrophyIcon    },
+    { path: "/initiatives",   label: "Initiatives",  icon: LightbulbIcon },
+    { path: "/gallery",       label: "Gallery",      icon: ImagesIcon    },
+    { path: "/events",        label: "Events",       icon: CalendarIcon  },
+    { path: "/chat",          label: "AI Chatbot",   icon: MessageIcon   },
+    { path: "/contact",       label: "Contact",      icon: MessageIcon   },
   ];
 
   const toggleMenu = () => setIsOpen(!isOpen);
@@ -146,7 +111,6 @@ function Navbar() {
                 <Link 
                   to={item.path} 
                   className={`nav-link ${isActive ? 'active' : ''}`}
-                  style={{ '--item-color': item.color }}
                 >
                   <div className="nav-link-content">
                     <div className="nav-icon">
@@ -265,7 +229,6 @@ function Navbar() {
                         to={item.path} 
                         className={`mobile-nav-link ${isActive ? 'active' : ''}`}
                         onClick={() => setIsOpen(false)}
-                        style={{ '--item-color': item.color }}
                       >
                         <div className="mobile-nav-icon">
                           <Icon size={22} />

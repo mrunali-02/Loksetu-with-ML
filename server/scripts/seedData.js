@@ -76,7 +76,7 @@ const seedDatabase = async () => {
       ...generateParticipants(4, 'Volunteer', 1.0)       // 100% attendance
     ];
     
-    // Event 2: Low participation, huge drop-off
+    // Event 2: Low participation, huge drop in retention
     const event2Participants = [
       ...generateParticipants(5, 'Participant', 0.3),  // 30% attendance
       ...generateParticipants(1, 'Volunteer', 1.0)

@@ -76,7 +76,7 @@ function ManageAchievements() {
         {/* Heading */}
         <div className="page-eyebrow"><Award size={12} /> Admin · Achievements</div>
         <h2 className="page-title">
-          {editingId ? <>Edit <em>Achievement</em></> : <>Add <em>Achievement</em></>}
+          {editingId ? "Edit Achievement" : "Add Achievement"}
         </h2>
 
         {/* Form */}

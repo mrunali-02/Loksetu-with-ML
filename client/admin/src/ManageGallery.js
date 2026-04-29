@@ -91,7 +91,7 @@ function ManageGallery() {
           <ImageIcon size={12} /> Admin · Gallery
         </div>
         <h2>
-          {editingId ? <>Edit <em>Gallery Item</em></> : <>Add <em>Gallery Item</em></>}
+          {editingId ? "Edit Gallery Item" : "Add Gallery Item"}
         </h2>
 
         {/* Form */}

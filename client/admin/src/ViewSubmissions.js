@@ -1,8 +1,54 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import NaviBar from "./NaviBar";
-import { Users, Loader2, AlertCircle, UserCheck, UserPlus } from "lucide-react";
+import { Users, Loader2, AlertCircle, UserCheck, UserPlus, Sparkles, TrendingUp, Info } from "lucide-react";
 import "./ViewSubmissions.css";
+
+const PredictionCard = ({ eventId }) => {
+  const [prediction, setPrediction] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    const fetchPrediction = async () => {
+      setLoading(true);
+      try {
+        const res = await axios.get(`http://localhost:5000/api/events/${eventId}/predict`);
+        setPrediction(res.data);
+      } catch (err) {
+        console.error("Prediction fetch failed", err);
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPrediction();
+  }, [eventId]);
+
+  if (loading) return (
+    <div className="prediction-mini-state">
+      <Loader2 size={12} className="spin" /> Calculating turnout...
+    </div>
+  );
+
+  if (error || !prediction) return null;
+
+  return (
+    <div className="prediction-card-inline">
+      <div className="pred-icon"><TrendingUp size={14} /></div>
+      <div className="pred-content">
+        <div className="pred-label">ML Turnout Prediction</div>
+        <div className="pred-value">
+          {prediction.predicted_participants} 
+          <span className="pred-unit">Attendees</span>
+        </div>
+        <div className="pred-note">
+          <Sparkles size={10} /> {prediction.confidence_note}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 function ViewSubmissions() {
   const [submissions, setSubmissions] = useState([]);
@@ -34,7 +80,7 @@ function ViewSubmissions() {
           <Users size={12} /> Admin · Submissions
         </div>
         <h1 className="submissions-title">
-          Event <em>Submissions</em>
+          Event Submissions
         </h1>
 
         {/* States */}
@@ -76,6 +122,7 @@ function ViewSubmissions() {
                     {partCount} Participants
                   </span>
                 </div>
+                <PredictionCard eventId={ev.eventId} />
               </div>
 
               {/* Two-column body */}

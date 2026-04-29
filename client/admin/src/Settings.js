@@ -87,7 +87,7 @@ function Settings() {
           <Settings2 size={12} /> Admin · Settings
         </div>
         <h1 className="settings-title">
-          Site <em>Settings</em>
+          Site Settings
         </h1>
 
         {/* Password card */}

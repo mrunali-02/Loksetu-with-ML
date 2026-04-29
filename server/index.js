@@ -81,6 +81,7 @@ const eventSchema = new mongoose.Schema({
   capacity: { type: Number, default: 0 },
   tags: { type: [String], default: [] },
   actual_participants: { type: Number, default: null },
+  duplicatesPrevented: { type: Number, default: 0 },
   participants: [
     {
       name: String,
@@ -182,11 +183,11 @@ app.post('/api/events', upload.fields([
   if (!title || !date)
     return res.status(400).json({ error: 'Title and date required' });
 
-  const poster = req.files.poster
+  const poster = req.files?.poster
     ? `uploads/${req.files.poster[0].filename}`
     : '';
 
-  const photoUrls = req.files.photos
+  const photoUrls = req.files?.photos
     ? req.files.photos.map(f => `uploads/${f.filename}`)
     : [];
 
@@ -217,6 +218,16 @@ app.post('/api/events', upload.fields([
   await newEvent.save();
 
   res.status(201).json(newEvent);
+});
+
+app.delete('/api/events/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    await Event.findByIdAndDelete(id);
+    res.json({ message: 'Event deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to delete event' });
+  }
 });
 
 // ----------------- SETTINGS ROUTES -----------------
@@ -273,6 +284,87 @@ app.delete('/api/settings/logo', async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Failed to delete logo' });
+  }
+});
+
+// ----------------- GALLERY ROUTES -----------------
+
+app.get('/api/gallery', async (req, res) => {
+  try {
+    const galleryItems = await Gallery.find().sort({ year: -1 });
+    res.json(galleryItems);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch gallery' });
+  }
+});
+
+app.post('/api/gallery/photo', upload.single('file'), async (req, res) => {
+  try {
+    const { caption, year, eventType } = req.body;
+    if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
+
+    const newItem = new Gallery({
+      type: 'photo',
+      url: `uploads/${req.file.filename}`,
+      caption,
+      year: Number(year),
+      eventType
+    });
+
+    await newItem.save();
+    res.status(201).json(newItem);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to save photo' });
+  }
+});
+
+app.post('/api/gallery/video', async (req, res) => {
+  try {
+    const { url, caption, year, eventType } = req.body;
+    const newItem = new Gallery({
+      type: 'video',
+      url,
+      caption,
+      year: Number(year),
+      eventType
+    });
+    await newItem.save();
+    res.status(201).json(newItem);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to save video' });
+  }
+});
+
+app.put('/api/gallery/photo/:id', upload.single('file'), async (req, res) => {
+  try {
+    const { caption, year, eventType } = req.body;
+    const update = { caption, year: Number(year), eventType };
+    if (req.file) update.url = `uploads/${req.file.filename}`;
+
+    const updated = await Gallery.findByIdAndUpdate(req.params.id, update, { new: true });
+    res.json(updated);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to update photo' });
+  }
+});
+
+app.put('/api/gallery/video/:id', async (req, res) => {
+  try {
+    const { url, caption, year, eventType } = req.body;
+    const updated = await Gallery.findByIdAndUpdate(req.params.id, { url, caption, year: Number(year), eventType }, { new: true });
+    res.json(updated);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to update video' });
+  }
+});
+
+app.delete('/api/gallery/:id', async (req, res) => {
+  try {
+    await Gallery.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to delete item' });
   }
 });
 
@@ -383,13 +475,13 @@ app.post('/api/events/:id/register', async (req, res) => {
         participants: event.participants
       }
     );
-
     if (response.data.duplicate) {
+      event.duplicatesPrevented = (event.duplicatesPrevented || 0) + 1;
+      await event.save();
 
       return res.status(400).json({
         error: "You already registered for this event"
       });
-
     }
 
     const normalizedRole =
@@ -442,28 +534,38 @@ app.post('/api/events/:id/register', async (req, res) => {
 // ----------------- REPORT GENERATION (NODE -> PYTHON) --------------
 app.post('/api/reports/generate', async (req, res) => {
   try {
-    const events = await Event.find({}, 'title date participants volunteerCap').lean();
+    const events = await Event.find({}, 'title date participants volunteerCap duplicatesPrevented registered actual_participants status').lean();
     const initiatives = await Initiative.find({}, 'title impact_metrics').lean();
     const achievements = await Achievement.find({}, 'title year').lean();
 
     let totalParticipants = 0;
     let totalVolunteers = 0;
+    let totalAttended = 0;
+    let totalDuplicatesPrevented = 0;
 
     events.forEach(e => {
-        if (e.participants) {
-            e.participants.forEach(p => {
-                if (p.role === 'Volunteer') totalVolunteers++;
-                else totalParticipants++;
-            });
+        totalDuplicatesPrevented += (e.duplicatesPrevented || 0);
+        const parts = (e.participants || []).filter(p => p.role !== 'Volunteer');
+        const vols = (e.participants || []).filter(p => p.role === 'Volunteer');
+        
+        if (parts.length > 0) {
+            totalParticipants += parts.length;
+            totalAttended += parts.filter(p => p.attended === true || p.attended === "true").length;
+        } else {
+            totalParticipants += (e.registered || 0);
+            totalAttended += (e.actual_participants || 0);
         }
+        totalVolunteers += vols.length;
     });
 
-    // Mock dropoff/duplicate metrics for ML analysis (Using earlier stress test values)
+    const realDropoffRate = totalParticipants > 0 ? ((totalParticipants - totalAttended) / totalParticipants) * 100 : 0;
+
+    // We now pass genuine dynamic duplicate intervention counts natively
     const stats = {
       totalParticipants,
       totalVolunteers,
-      dropoffRate: 24.5, // Mock historical dropoff percentage
-      duplicatesBlocked: 140 // Mock block count from duplicate detection tests
+      dropoffRate: realDropoffRate,
+      duplicatesBlocked: totalDuplicatesPrevented
     };
 
     const payload = { events, initiatives, achievements, stats };
@@ -487,10 +589,11 @@ async function predictParticipation(eventId) {
   const targetDate = new Date(targetEvent.date);
   const daysUntil = Math.max(0, Math.ceil((targetDate - now) / (1000 * 60 * 60 * 24)));
 
-  // Fetch past events that have actual_participants reported
+  // Fetch past events that have actual_participants reported and are not upcoming
   const pastEventsQuery = await Event.find({
     actual_participants: { $ne: null },
-    registered: { $ne: null }
+    registered: { $ne: null },
+    status: { $ne: 'upcoming' }
   }).lean();
 
   const past_events = pastEventsQuery.map(e => {

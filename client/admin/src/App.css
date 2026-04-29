@@ -1,5 +1,4 @@
-/* Import Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap');
+/* Typography imports handled in index.css */
 
 /* Global Reset and Base Styles */
 * {
@@ -13,9 +12,9 @@ html {
 }
 
 body {
-  font-family: 'Inter', 'Poppins', sans-serif;
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-  color: #1a202c;
+  font-family: var(--font-primary);
+  background-color: var(--bg-main);
+  color: var(--text-primary);
   line-height: 1.6;
   overflow-x: hidden;
   min-height: 100vh;
@@ -33,12 +32,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(45deg, #2E7D32, #4CAF50);
+  background: linear-gradient(45deg, #6366F1, #A78BFA);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(45deg, #1B5E20, #2E7D32);
+  background: linear-gradient(45deg, #4F46E5, #6366F1);
 }
 
 /* App Container */
@@ -63,7 +62,7 @@ body {
 }
 
 .text-gradient {
-  background: linear-gradient(135deg, #2E7D32, #4CAF50);
+  background: linear-gradient(135deg, #6366F1, #A78BFA);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -137,19 +136,19 @@ body {
 .font-extrabold { font-weight: 800; }
 
 /* Color Utilities */
-.text-primary { color: #2E7D32; }
+.text-primary { color: #6366F1; }
 .text-secondary { color: var(--color-accent); }
 .text-accent { color: #FF6F00; }
 .text-gray-500 { color: #6b7280; }
 .text-gray-600 { color: #4b5563; }
 .text-gray-700 { color: #374151; }
 .text-gray-800 { color: #1f2937; }
-.text-gray-900 { color: var(--color-text-inverse); }
+.text-gray-900 { color: var(--text-primary); }
 
-.bg-primary { background-color: #2E7D32; }
+.bg-primary { background-color: #6366F1; }
 .bg-secondary { background-color: var(--color-accent); }
 .bg-accent { background-color: #FF6F00; }
-.bg-white { background-color: var(--color-secondary); }
+.bg-white { background-color: var(--bg-card); }
 .bg-gray-50 { background-color: #f9fafb; }
 .bg-gray-100 { background-color: #f3f4f6; }
 .bg-gray-200 { background-color: #e5e7eb; }
@@ -157,7 +156,7 @@ body {
 /* Border Utilities */
 .border { border: 1px solid #e5e7eb; }
 .border-2 { border: 2px solid #e5e7eb; }
-.border-primary { border-color: #2E7D32; }
+.border-primary { border-color: #6366F1; }
 .border-secondary { border-color: var(--color-accent); }
 .border-accent { border-color: #FF6F00; }
 .rounded { border-radius: 0.25rem; }
@@ -264,12 +263,12 @@ body {
 }
 
 .hover-glow:hover {
-  box-shadow: 0 0 20px rgba(46, 125, 50, 0.3);
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
 }
 
 /* Button Styles */
 .btn-primary {
-  background: linear-gradient(135deg, #2E7D32, #4CAF50);
+  background: linear-gradient(135deg, #6366F1, #4F46E5);
   color: white;
   border: none;
   padding: 12px 24px;
@@ -283,9 +282,9 @@ body {
 }
 
 .btn-primary:hover {
-  background: linear-gradient(135deg, #1B5E20, #2E7D32);
+  background: linear-gradient(135deg, #4F46E5, #3730A3);
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(46, 125, 50, 0.4);
+  box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
 }
 
 .btn-secondary {
@@ -310,8 +309,8 @@ body {
 
 .btn-outline {
   background: transparent;
-  color: #2E7D32;
-  border: 2px solid #2E7D32;
+  color: #6366F1;
+  border: 2px solid #6366F1;
   padding: 10px 22px;
   border-radius: 8px;
   font-weight: 500;
@@ -323,24 +322,24 @@ body {
 }
 
 .btn-outline:hover {
-  background: #2E7D32;
+  background: #6366F1;
   color: white;
   transform: translateY(-2px);
 }
 
 /* Card Styles */
 .card {
-  background-color: var(--color-secondary);
+  background-color: var(--bg-card);
   border-radius: 16px;
   padding: 24px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border-soft);
 }
 
 .card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
 }
 
 .card-elevated {
@@ -406,7 +405,7 @@ body {
   display: inline-block;
   width: 20px;
   height: 20px;
-  border: 3px solid rgba(255, 255, 255, 0.3);
+  border: 3px solid var(--border-soft);
   border-radius: 50%;
   border-top-color: #fff;
   animation: spin 1s ease-in-out infinite;
@@ -423,7 +422,7 @@ button:focus,
 input:focus,
 textarea:focus,
 select:focus {
-  outline: 2px solid #4CAF50;
+  outline: 2px solid #6366F1;
   outline-offset: 2px;
 }
 

@@ -98,7 +98,7 @@ function ManageInitiatives() {
           Admin · Initiatives
         </div>
         <h2>
-          {editingId ? <>Edit <em>Initiative</em></> : <>Add <em>Initiative</em></>}
+          {editingId ? "Edit Initiative" : "Add Initiative"}
         </h2>
 
         {/* ── Form ── */}
